@@ -1,5 +1,6 @@
 package com.example.apionlineshop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,27 +16,27 @@ import java.util.List;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Data
-@Entity(name="Products")
+@Entity(name="Product")
 @Table(name="products")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Products {
+public class Product {
     @Id
     @SequenceGenerator(
-        name="products_sequance",
-        sequenceName = "products_sequance",
+        name="product_sequance",
+        sequenceName = "product_sequance",
         allocationSize = 1
     )
     @GeneratedValue(
             strategy = SEQUENCE,
-            generator="products_sequance"
-    )
+            generator="product_sequance")
+
     @Column(
-            name="id",
-            updatable = false,
-            columnDefinition = "INTEGER"
+
+            name = "id"
     )
-    private long id;
+   private long id;
+
     @NotBlank(message = "name is necessary")
     @Column(
             name="name",
@@ -48,12 +49,6 @@ public class Products {
             columnDefinition = "DOUBLE"
     )
     private double price;
-    @NotBlank(message = "image is necessary")
-    @Column(
-            name="image",
-            columnDefinition = "BLOB"
-    )
-    private byte[] image;
     @NotBlank(message = "create_date is necessary")
     @Column(
             name="create_date",
@@ -65,22 +60,24 @@ public class Products {
             name="stock",
             columnDefinition = "INTEGER"
     )
+
+
     private int stock;
+    @NotBlank(message="category is necessary")
+    @Column(
+            name="category",
+            columnDefinition = "TEXT"
+    )
+    private String category;
+    @OneToMany(mappedBy = "product")
+    private List<OrderDetail> orderDetails=new ArrayList<>();
 
-    @JsonManagedReference
-    @OneToMany
-            (
-                    cascade = CascadeType.ALL,
-                    mappedBy = "products",
-                    fetch = FetchType.EAGER
-
-            )
-    private List<OrderDetails> orderDetailsList=new ArrayList<>();
-
-    public void add(OrderDetails orderDetails){
-        this.orderDetailsList.add(orderDetails);
-    }
-    public void remove(OrderDetails orderDetails){
-        this.orderDetailsList.remove(orderDetails);
-    }
+//    private List<OrderDetails> orderDetailsList=new ArrayList<>();
+//
+//    public void add(OrderDetails orderDetails){
+//        this.orderDetailsList.add(orderDetails);
+//    }
+//    public void remove(OrderDetails orderDetails){
+//        this.orderDetailsList.remove(orderDetails);
+//    }
 }

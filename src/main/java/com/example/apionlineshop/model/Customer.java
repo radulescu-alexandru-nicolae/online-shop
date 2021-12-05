@@ -1,6 +1,8 @@
 package com.example.apionlineshop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,26 +18,23 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name="Customers")
+@Entity(name="Customer")
 @Table(name="customers")
-public class Customers {
+public class Customer {
     @Id
     @SequenceGenerator(
-            name="customers_sequance",
-            sequenceName = "customers_sequance",
+            name="customer_sequance",
+            sequenceName = "customer_sequance",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = SEQUENCE,
-            generator="customers_sequance"
+            generator="customer_sequance"
 
     )
-    @Column(
-            name="id",
-            updatable = false,
-            columnDefinition = "INTEGER"
-    )
     private long id;
+
+
     @NotBlank(message = "email is necessary")
     @Column(
             name="email",
@@ -55,11 +54,15 @@ public class Customers {
     )
     private String addres;
 
-@JsonManagedReference
-@OneToMany(
-        cascade = CascadeType.ALL,
-        mappedBy = "customer",
-        fetch = FetchType.EAGER
-)
-    private List<Orders> ordersList=new ArrayList<>();
+    @OneToMany(mappedBy =  "customer")
+    private List<Order> orders= new ArrayList<>();
+
+
+
+public Customer(String email,String password,String addres){
+    this.email=email;
+    this.password=password;
+    this.addres=addres;
+}
+
 }
