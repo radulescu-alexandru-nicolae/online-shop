@@ -81,10 +81,15 @@ public class Order {
             foreignKey = @ForeignKey(
                     name="customer_fk"
             ))
-    @JsonBackReference
+
+    @JsonManagedReference
     private Customer customer;
 
+
+
+
   @OneToMany(mappedBy="order")
+  @JsonBackReference
     private List<OrderDetail> orderDetails=new ArrayList<>();
 
 

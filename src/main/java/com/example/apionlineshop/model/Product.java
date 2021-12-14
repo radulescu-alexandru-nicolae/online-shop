@@ -1,5 +1,6 @@
 package com.example.apionlineshop.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -70,6 +71,7 @@ public class Product {
     )
     private String category;
     @OneToMany(mappedBy = "product")
+    @JsonBackReference
     private List<OrderDetail> orderDetails=new ArrayList<>();
 
 //    private List<OrderDetails> orderDetailsList=new ArrayList<>();

@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path="api/v1/customers")
 @CrossOrigin
+
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -30,12 +31,17 @@ public class CustomerController {
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer){
 
 
-        System.out.println("ceva");
      customerService.getRepository().save(customer);
         System.out.println(customer);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
-    @GetMapping(path="api/v1/customers/{email}")
+    @DeleteMapping(path="api/v1/customers")
+    public ResponseEntity<Customer> deleteCustomer(@RequestBody String email){
+        Customer c=getCustomerByName(email);
+        customerService.getRepository().delete(c);
+        return new ResponseEntity<>(c,HttpStatus.OK);
+    }
+
     public Customer getCustomerByName(String email){
    List<Customer> lista=this.getCustomers();
     for(Customer c:lista){

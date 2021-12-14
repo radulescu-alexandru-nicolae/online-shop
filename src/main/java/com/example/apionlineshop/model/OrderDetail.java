@@ -1,6 +1,7 @@
 package com.example.apionlineshop.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -62,6 +63,7 @@ public class OrderDetail {
             referencedColumnName = "id",
             foreignKey = @ForeignKey(name="product_fk")
     )
+    @JsonManagedReference
     private Product product;
 
     @ManyToOne(
@@ -74,6 +76,7 @@ public class OrderDetail {
             referencedColumnName = "id",
             foreignKey = @ForeignKey(name="order_fk")
     )
+    @JsonManagedReference
     private Order order;
 
 
